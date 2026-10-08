@@ -96,7 +96,7 @@ window.SURPRISE = {
     {
       type: "text",
       body:
-        "Ainda guardo a imagem do teu rosto bem de pertinho. Foi um momento que ficou marcado e que não precisa ser explicado. A gente simplesmente sentiu. Um momento que me marcou muito foi quando nos vi no espelho. Eu senti uma felicidade que transbordava, uma sensação muito boa de imaginar o quanto eu poderia ser feliz contigo.",
+        "Ainda guardo a imagem do teu rosto bem de pertinho. Foi um momento que ficou marcado e que não precisa ser explicado. A gente simplesmente sentiu. Quando nos vi no espelho, eu senti uma felicidade que transbordava, uma sensação muito boa de imaginar o quanto eu poderia ser feliz contigo.",
     },
     {
       type: "photo",
@@ -175,7 +175,7 @@ window.SURPRISE = {
     {
       type: "closing",
       body:
-        "Feliz aniversário, Ma ❤️\n\nQue venham muitos outros momentos, viagens, porcariazinas e histórias pra gente lembrar juntos.\n\nCom carinho,\nPedro",
+        "Feliz aniversário, Ma ❤️\n\nQue o teu dia seja tão especial quanto tu é pra mim.\n\nCom carinho,\nPedro",
     },
   ],
 };
