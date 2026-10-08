@@ -8,6 +8,7 @@
   const intro = document.getElementById("intro");
   const letter = document.getElementById("letter");
   const letterPage = document.getElementById("letter-page");
+  const letterSheet = document.getElementById("letter-sheet");
   const letterContent = document.getElementById("letter-content");
   const openBtn = document.getElementById("open-btn");
   const continueBtn = document.getElementById("continue-btn");
@@ -16,6 +17,7 @@
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const turnMs = 520;
+  const SHEET_TILTS = [-0.75, 0.55, -0.35, 0.7, -0.5, 0.4, -0.65, 0.3];
 
   const ICONS = {
     next: `
@@ -38,6 +40,7 @@
   let typeTimer = null;
   let homeTimer = null;
   let arrowMode = "next";
+  let skipTyping = null;
 
   const app = document.querySelector(".app");
 
@@ -49,11 +52,19 @@
   intro.classList.add("is-active");
   setArrowMode("next");
 
+  const heartPath = intro.querySelector(".cover__heart-path");
+  if (heartPath && typeof heartPath.getTotalLength === "function") {
+    const heartLen = heartPath.getTotalLength();
+    heartPath.style.strokeDasharray = `${heartLen}`;
+    heartPath.style.strokeDashoffset = `${heartLen}`;
+  }
+
   function clearTypeTimer() {
     if (typeTimer) {
       clearTimeout(typeTimer);
       typeTimer = null;
     }
+    skipTyping = null;
   }
 
   function clearHomeTimer() {
@@ -80,6 +91,12 @@
 
   function setContentMode(_mode) {
     // Folha única: texto e fotos ficam no papel
+  }
+
+  function applySheetTilt(index) {
+    if (!letterSheet) return;
+    const deg = SHEET_TILTS[index % SHEET_TILTS.length];
+    letterSheet.style.transform = `rotate(${deg}deg)`;
   }
 
   function prepareArrowForStep(index) {
@@ -129,6 +146,7 @@
 
   function resetCoverMotion() {
     const cover = intro.querySelector(".cover");
+    const heartPath = intro.querySelector(".cover__heart-path");
     intro.classList.remove("is-opening");
     if (!cover) return;
 
@@ -136,8 +154,10 @@
     cover.style.filter = "";
     cover.style.opacity = "";
     cover.style.transform = "";
+    if (heartPath) heartPath.style.animation = "none";
     void cover.offsetWidth;
     cover.style.animation = "";
+    if (heartPath) heartPath.style.animation = "";
   }
 
   function switchToLetter() {
@@ -218,6 +238,7 @@
     clearTypeTimer();
     typing = false;
     stepIndex = index;
+    applySheetTilt(index);
     const step = data.steps[index];
     letterContent.innerHTML = "";
     continueBtn.classList.add("is-hidden");
@@ -305,6 +326,7 @@
 
   function typeText(element, fullText, done, options = {}) {
     const speed = reduceMotion ? 0.7 : 1;
+    let finished = false;
 
     typing = true;
     setContinueEnabled(false);
@@ -321,10 +343,23 @@
 
     let i = 0;
 
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      clearTypeTimer();
+      skipTyping = null;
+      typing = false;
+      element.textContent = fullText;
+      done();
+    };
+
+    skipTyping = finish;
+
     const tick = () => {
+      if (finished) return;
+
       if (i >= fullText.length) {
-        typing = false;
-        done();
+        finish();
         return;
       }
 
@@ -343,11 +378,18 @@
     tick();
   }
 
+  function onLetterTap(event) {
+    if (!typing || !skipTyping) return;
+    if (event.target.closest("#continue-btn")) return;
+    skipTyping();
+  }
+
   function renderStep(index) {
     clearTypeTimer();
     clearHomeTimer();
     typing = false;
     stepIndex = index;
+    applySheetTilt(index);
     const step = data.steps[index];
     letterContent.innerHTML = "";
     prepareArrowForStep(index);
@@ -455,6 +497,7 @@
 
   openBtn.addEventListener("click", switchToLetter);
   continueBtn.addEventListener("click", onCornerClick);
+  letterPage.addEventListener("click", onLetterTap);
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "ArrowRight") {
@@ -480,6 +523,11 @@
         event.preventDefault();
         switchToLetter();
       }
+      return;
+    }
+    if (typing && skipTyping) {
+      event.preventDefault();
+      skipTyping();
       return;
     }
     if (!continueBtn.disabled && !continueBtn.classList.contains("is-hidden")) {

@@ -243,14 +243,19 @@ button {
   justify-content: center;
   margin: 1rem auto 1.05rem;
   color: var(--ink-soft);
-  opacity: 0;
-  animation: heartIn 1s var(--ease) 0.5s forwards;
 }
 
 .cover__heart {
   width: 1.55rem;
   height: auto;
   display: block;
+  overflow: visible;
+}
+
+.cover__heart-path {
+  stroke-dasharray: 86;
+  stroke-dashoffset: 86;
+  animation: heartDraw 1.35s var(--ease) 0.42s forwards;
 }
 
 .hero-title {
@@ -362,14 +367,9 @@ button {
   }
 }
 
-@keyframes heartIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px) scale(0.88);
-  }
+@keyframes heartDraw {
   to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+    stroke-dashoffset: 0;
   }
 }
 
@@ -780,6 +780,11 @@ button {
   .photo-frame img {
     opacity: 1 !important;
     transform: none !important;
+    animation: none !important;
+  }
+
+  .cover__heart-path {
+    stroke-dashoffset: 0 !important;
     animation: none !important;
   }
 
