@@ -9,7 +9,7 @@
   --rose: #c47a7a;
   --rose-deep: #a85d5d;
   --shadow: rgba(58, 36, 28, 0.16);
-  --wood: #b48250;
+  --wood: #ba8850;
   --radius: 0.35rem;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --font-hand: "Caveat", "Segoe Print", cursive;
@@ -64,7 +64,7 @@ button {
   background:
     radial-gradient(70% 50% at 50% 42%, rgba(196, 150, 96, 0.16) 0%, transparent 62%),
     radial-gradient(55% 40% at 50% 58%, rgba(140, 90, 48, 0.12) 0%, transparent 60%),
-    linear-gradient(180deg, #b48250 0%, #b48250 12%, #ae7c4a 50%, #b48250 88%, #b48250 100%);
+    linear-gradient(180deg, #ba8850 0%, #ba8850 12%, #b48248 50%, #ba8850 88%, #ba8850 100%);
 }
 
 .sky__glow {
@@ -81,7 +81,7 @@ button {
   top: 22%;
   left: 8%;
   right: auto;
-  background: #c49664;
+  background: #c99c68;
   opacity: 0.16;
 }
 
@@ -91,7 +91,7 @@ button {
   bottom: 18%;
   right: 6%;
   left: auto;
-  background: #8a5a32;
+  background: #8f5e30;
   opacity: 0.14;
   animation-delay: -6s;
 }
